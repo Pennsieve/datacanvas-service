@@ -1,6 +1,6 @@
-# DOI Service
+# Data Canvas Service
 
-A service to create, manage, and publish DataCite DOIs. See https://support.datacite.org/docs/api for full DataCite API documentation.
+A service that manages Pennsieve Data Canvases. 
 
 ## Testing
 
