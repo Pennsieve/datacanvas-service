@@ -2,14 +2,13 @@
 
 package com.pennsieve.datacanvas.handlers
 
+import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-
 import com.pennsieve.datacanvas.Ports
 import com.pennsieve.datacanvas.server.healthcheck.{
-  HealthcheckHandler => GuardrailHandler,
-  HealthcheckResource
+  HealthcheckResource,
+  HealthcheckHandler => GuardrailHandler
 }
-
 import com.pennsieve.datacanvas.server.healthcheck.{HealthcheckHandler => Huh}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,7 +36,7 @@ object HealthcheckHandler {
       ports: Ports
   )(
       implicit
-      materializer: ActorMaterializer,
+      system: ActorSystem,
       executionContext: ExecutionContext
   ) = HealthcheckResource.routes(new HealthcheckHandler(ports))
 }

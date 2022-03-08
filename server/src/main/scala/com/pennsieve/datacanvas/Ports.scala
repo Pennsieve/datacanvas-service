@@ -24,8 +24,7 @@ class Ports(
 )(
     implicit
     system: ActorSystem,
-    executionContext: ExecutionContext,
-    materializer: ActorMaterializer
+    executionContext: ExecutionContext
 ) {
 
   val jwt: Jwt.Config = new Jwt.Config {
