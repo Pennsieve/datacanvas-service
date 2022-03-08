@@ -40,8 +40,6 @@ lazy val headerLicenseValue = Some(HeaderLicense.Custom(
 ))
 lazy val headerMappingsValue = HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment
 
-// Dependency hell is brewing here:
-//
 // Elastic4s cannot be upgraded because it will bump Circe to 12.0
 // Circe cannot be upgraded because pennsieve-api depends on the generated client, and is currently on 11.0
 // AWS SDK cannot be upgraded because it bumps Jackson > 10.0, which breaks Elastic4s
