@@ -1,4 +1,4 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi
 
@@ -55,16 +55,17 @@ class MockDataCiteClient() extends DataCiteClient {
     )
 
   override def createDoi(
-    doiSuffix: String,
-    title: String,
-    creators: List[CreatorDTO],
-    publicationYear: Option[Int],
-    version: Option[Int],
-    description: Option[String],
-    licenses: Option[List[LicenseDTO]],
-    owner: Option[CreatorDTO]
-  )(implicit
-    logContext: DoiLogContext
+      doiSuffix: String,
+      title: String,
+      creators: List[CreatorDTO],
+      publicationYear: Option[Int],
+      version: Option[Int],
+      description: Option[String],
+      licenses: Option[List[LicenseDTO]],
+      owner: Option[CreatorDTO]
+  )(
+      implicit
+      logContext: DoiLogContext
   ): Future[DataciteDoi] =
     // Using this to simulate failure condition in the client
     if (title == existingDoiTitle) {
@@ -74,28 +75,30 @@ class MockDataCiteClient() extends DataCiteClient {
     }
 
   override def getDoi(
-    doi: String
-  )(implicit
-    logContext: DoiLogContext
+      doi: String
+  )(
+      implicit
+      logContext: DoiLogContext
   ): Future[DataciteDoi] = {
     Future.successful(testDoi)
   }
 
   override def publishDoi(
-    doi: String,
-    title: String,
-    creators: List[CreatorDTO],
-    publicationYear: Int,
-    url: String,
-    publisher: Option[String],
-    version: Option[Int],
-    description: Option[String],
-    licenses: Option[List[LicenseDTO]],
-    owner: Option[CreatorDTO],
-    collections: Option[List[CollectionDTO]],
-    externalPublications: Option[List[ExternalPublicationDTO]]
-  )(implicit
-    logContext: DoiLogContext
+      doi: String,
+      title: String,
+      creators: List[CreatorDTO],
+      publicationYear: Int,
+      url: String,
+      publisher: Option[String],
+      version: Option[Int],
+      description: Option[String],
+      licenses: Option[List[LicenseDTO]],
+      owner: Option[CreatorDTO],
+      collections: Option[List[CollectionDTO]],
+      externalPublications: Option[List[ExternalPublicationDTO]]
+  )(
+      implicit
+      logContext: DoiLogContext
   ): Future[DataciteDoi] = {
 
     Future.successful(
@@ -126,18 +129,19 @@ class MockDataCiteClient() extends DataCiteClient {
   }
 
   override def reviseDoi(
-    doi: String,
-    title: String,
-    creators: List[CreatorDTO],
-    version: Option[Int],
-    description: Option[String],
-    licenses: Option[List[LicenseDTO]],
-    owner: Option[CreatorDTO],
-    collections: Option[List[CollectionDTO]],
-    externalPublications: Option[List[ExternalPublicationDTO]],
-    updated: Option[OffsetDateTime]
-  )(implicit
-    logContext: DoiLogContext
+      doi: String,
+      title: String,
+      creators: List[CreatorDTO],
+      version: Option[Int],
+      description: Option[String],
+      licenses: Option[List[LicenseDTO]],
+      owner: Option[CreatorDTO],
+      collections: Option[List[CollectionDTO]],
+      externalPublications: Option[List[ExternalPublicationDTO]],
+      updated: Option[OffsetDateTime]
+  )(
+      implicit
+      logContext: DoiLogContext
   ): Future[DataciteDoi] = {
 
     Future.successful(
@@ -176,9 +180,10 @@ class MockDataCiteClient() extends DataCiteClient {
   }
 
   override def hideDoi(
-    doi: String
-  )(implicit
-    logContext: DoiLogContext
+      doi: String
+  )(
+      implicit
+      logContext: DoiLogContext
   ): Future[DataciteDoi] = {
     Future.successful(
       testDoi

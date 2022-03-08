@@ -1,17 +1,14 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
-package com.pennsieve.doi
+package com.pennsieve.datacanvas
 
-import scala.concurrent.duration._
-import scala.concurrent.duration.FiniteDuration
+import scala.concurrent.duration.{FiniteDuration, _}
 
 case class Config(
     host: String = "0.0.0.0",
     port: Int = 8080,
     postgres: PostgresConfiguration,
-    dataCite: DataCiteClientConfiguration,
-    jwt: JwtConfig,
-    citation: CitationClientConfiguration
+    jwt: JwtConfig
 )
 
 case class PostgresConfiguration(

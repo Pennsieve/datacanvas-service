@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: DataCanvas Service
+tags:
+  - name: Health
+servers:
+  - url: https://api.pennsieve.io/datacanvas
+  - url: https://api.pennsieve.net/datacanvas
+
+paths:
+  "/health":
+    get:
+      security: [ ]
+      summary: healthcheck
+      operationId: healthcheck
+      x-scala-package: healthcheck
+      description: Ensure the service is responding to requests.
+      responses:
+        "200":
+          description: Success
+        "500":
+          description: Internal error
+          content:
+            "*/*":
+              schema:
+                type: string
+
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:

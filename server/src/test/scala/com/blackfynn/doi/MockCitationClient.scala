@@ -1,4 +1,4 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi
 
@@ -12,9 +12,10 @@ import scala.concurrent.Future
 class MockCitationClient() extends CitationClient {
 
   def getCitation(
-    doi: String
-  )(implicit
-    logContext: DoiLogContext
+      doi: String
+  )(
+      implicit
+      logContext: DoiLogContext
   ): Future[Citation] =
     doi.toLowerCase match {
       case "10.1073/pnas.74.12.5463" =>

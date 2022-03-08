@@ -1,11 +1,11 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi.db
 
 import com.pennsieve.doi.models.Doi
-import com.pennsieve.doi.{ NoDoiException, ServiceSpecHarness, TestUtilities }
+import com.pennsieve.doi.{NoDoiException, ServiceSpecHarness, TestUtilities}
 import com.pennsieve.test.AwaitableImplicits
-import org.scalatest.{ Matchers, WordSpec }
+import org.scalatest.{Matchers, WordSpec}
 
 class DoiMapperSpec
     extends WordSpec

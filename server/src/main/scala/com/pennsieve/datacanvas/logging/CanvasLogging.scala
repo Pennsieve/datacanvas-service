@@ -1,10 +1,10 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
-package com.pennsieve.doi.logging
+package com.pennsieve.datacanvas.logging
 
 import com.pennsieve.service.utilities.LogContext
 
-final case class DoiLogContext(
+final case class CanvasLogContext(
     organizationId: Option[Int] = None,
     datasetId: Option[Int] = None,
     userId: Option[Int] = None,

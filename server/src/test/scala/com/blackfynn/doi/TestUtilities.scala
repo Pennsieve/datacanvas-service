@@ -1,4 +1,4 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi
 
@@ -54,14 +54,15 @@ object TestUtilities extends AwaitableImplicits {
   }
 
   def createDoi(
-    db: Database
+      db: Database
   )(
-    organizationId: Int = 1,
-    datasetId: Int = 1,
-    doi: String = randomDoi(),
-    version: Int = 1
-  )(implicit
-    executionContext: ExecutionContext
+      organizationId: Int = 1,
+      datasetId: Int = 1,
+      doi: String = randomDoi(),
+      version: Int = 1
+  )(
+      implicit
+      executionContext: ExecutionContext
   ): Doi = {
 
     db.run(DoiMapper.create(organizationId, datasetId, doi)).await

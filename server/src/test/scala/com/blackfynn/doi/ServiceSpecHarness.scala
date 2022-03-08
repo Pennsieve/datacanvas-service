@@ -1,10 +1,10 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import com.pennsieve.doi.clients.{ CitationClient, DataCiteClient }
+import com.pennsieve.doi.clients.{CitationClient, DataCiteClient}
 import com.pennsieve.test.AwaitableImplicits
 import com.spotify.docker.client.DefaultDockerClient
 import com.spotify.docker.client.exceptions.DockerException
@@ -12,10 +12,10 @@ import com.typesafe.scalalogging.StrictLogging
 import com.whisk.docker.DockerFactory
 import com.whisk.docker.impl.spotify.SpotifyDockerFactory
 import com.whisk.docker.scalatest.DockerTestKit
-import org.scalatest.time.{ Second, Seconds, Span }
-import org.scalatest.{ BeforeAndAfterAll, OptionValues, Suite }
+import org.scalatest.time.{Second, Seconds, Span}
+import org.scalatest.{BeforeAndAfterAll, OptionValues, Suite}
 
-import scala.concurrent.{ Await, ExecutionContext }
+import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration.DurationInt
 
 trait ServiceSpecHarness

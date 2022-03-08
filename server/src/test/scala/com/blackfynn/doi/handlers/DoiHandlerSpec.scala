@@ -1,8 +1,8 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi.handlers
 
-import akka.http.scaladsl.model.headers.{ Authorization, OAuth2BearerToken }
+import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.pennsieve.auth.middleware.Jwt
@@ -20,7 +20,7 @@ import com.pennsieve.doi.client.doi.{
   PublishDoiResponse,
   ReviseDoiResponse
 }
-import com.pennsieve.doi.db.{ CitationCacheMapper, DoiMapper }
+import com.pennsieve.doi.db.{CitationCacheMapper, DoiMapper}
 import com.pennsieve.doi.models.{
   Contributor,
   Creator,
@@ -40,11 +40,11 @@ import com.pennsieve.doi.models.{
   Title,
   Type
 }
-import com.pennsieve.doi.{ ServiceSpecHarness, TestUtilities }
+import com.pennsieve.doi.{ServiceSpecHarness, TestUtilities}
 import com.pennsieve.test.AwaitableImplicits
 import io.circe.syntax._
-import org.scalatest.{ BeforeAndAfterEach, Matchers, WordSpec }
-import java.time.{ OffsetDateTime, ZoneId }
+import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
+import java.time.{OffsetDateTime, ZoneId}
 
 class DoiHandlerSpec
     extends WordSpec

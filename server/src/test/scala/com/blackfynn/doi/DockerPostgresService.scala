@@ -1,4 +1,4 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi
 
@@ -7,7 +7,7 @@ import java.sql.DriverManager
 
 import com.whisk.docker._
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration._
 import scala.util.Try
 
@@ -66,10 +66,11 @@ class PostgresReadyChecker(configuration: PostgresConfiguration)
     extends DockerReadyChecker {
 
   override def apply(
-    container: DockerContainerState
-  )(implicit
-    docker: DockerCommandExecutor,
-    executionContext: ExecutionContext
+      container: DockerContainerState
+  )(
+      implicit
+      docker: DockerCommandExecutor,
+      executionContext: ExecutionContext
   ): Future[Boolean] = {
     container
       .getPorts()

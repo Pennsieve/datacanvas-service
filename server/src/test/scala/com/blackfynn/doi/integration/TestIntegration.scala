@@ -1,8 +1,8 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi.integration
 
-import akka.http.scaladsl.model.headers.{ Authorization, OAuth2BearerToken }
+import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder
@@ -20,7 +20,7 @@ import com.pennsieve.doi.client.doi.{
   ReviseDoiResponse
 }
 import com.pennsieve.doi.client.definitions._
-import com.pennsieve.doi.clients.{ DataCiteClient, DataCiteClientImpl }
+import com.pennsieve.doi.clients.{DataCiteClient, DataCiteClientImpl}
 import com.pennsieve.doi.db.DoiMapper
 import com.pennsieve.doi.models.{
   Creator,
@@ -43,7 +43,7 @@ import com.pennsieve.doi.handlers.DoiHandler
 import com.pennsieve.test.AwaitableImplicits
 import monocle.macros.syntax.lens._
 import io.circe.syntax._
-import org.scalatest.{ BeforeAndAfterEach, Inside, Matchers, WordSpec }
+import org.scalatest.{BeforeAndAfterEach, Inside, Matchers, WordSpec}
 
 /**
   * Integration test that runs against the DataCite test API using the non-prod

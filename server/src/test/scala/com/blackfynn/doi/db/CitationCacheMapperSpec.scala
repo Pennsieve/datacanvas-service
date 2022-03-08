@@ -1,11 +1,11 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.doi.db
 
 import com.pennsieve.doi.db.profile.api._
 import com.pennsieve.doi.ServiceSpecHarness
 import com.pennsieve.test.AwaitableImplicits
-import org.scalatest.{ Matchers, WordSpec }
+import org.scalatest.{Matchers, WordSpec}
 
 class CitationCacheMapperSpec
     extends WordSpec

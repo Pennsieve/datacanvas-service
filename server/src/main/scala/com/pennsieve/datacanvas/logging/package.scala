@@ -1,6 +1,6 @@
-// Copyright (c) 2021 University of Pennsylvania. All Rights Reserved.
+// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
-package com.pennsieve.doi
+package com.pennsieve.datacanvas
 
 import akka.http.scaladsl.server.RouteResult
 import akka.http.scaladsl.server.Directive
