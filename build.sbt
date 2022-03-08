@@ -31,7 +31,7 @@ ThisBuild / credentials += Credentials(
 )
 
 // Until https://github.com/coursier/coursier/issues/1815 is fixed
-ThisBuild / useCoursier := false
+//ThisBuild / useCoursier := false
 
 ThisBuild / version := sys.props.get("version").getOrElse("SNAPSHOT")
 
