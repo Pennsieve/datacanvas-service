@@ -2,9 +2,10 @@
 
 package com.pennsieve.doi
 
+import com.pennsieve.datacanvas.PostgresConfiguration
+
 import java.net.ServerSocket
 import java.sql.DriverManager
-
 import com.whisk.docker._
 
 import scala.concurrent.{ExecutionContext, Future}

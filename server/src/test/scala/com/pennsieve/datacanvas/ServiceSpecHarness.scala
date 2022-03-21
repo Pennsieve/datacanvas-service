@@ -1,10 +1,10 @@
 // Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
 
-package com.pennsieve.doi
+package com.pennsieve.datacanvas
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import com.pennsieve.doi.clients.{CitationClient, DataCiteClient}
+import com.pennsieve.doi.DockerPostgresService
 import com.pennsieve.test.AwaitableImplicits
 import com.spotify.docker.client.DefaultDockerClient
 import com.spotify.docker.client.exceptions.DockerException
@@ -48,21 +48,10 @@ trait ServiceSpecHarness
       host = "0.0.0.0",
       port = 8080,
       postgres = postgresConfiguration,
-      dataCite = DataCiteClientConfiguration(
-        username = "test",
-        password = "test",
-        apiUrl = "test",
-        pennsievePrefix = "test"
-      ),
-      citation = CitationClientConfiguration(apiUrl = "test"),
       jwt = JwtConfig("test-key")
     )
 
-  def getPorts(config: Config): Ports = new Ports(config) {
-    override val dataCiteClient: DataCiteClient = new MockDataCiteClient()
-
-    override val citationClient: CitationClient = new MockCitationClient()
-  }
+  def getPorts(config: Config): Ports = new Ports(config) {}
 
   lazy implicit val ports: Ports = getPorts(getConfig())
 
@@ -70,14 +59,14 @@ trait ServiceSpecHarness
     super.beforeAll()
 
     val setup = isContainerReady(postgresContainer).map { _ =>
-      DatabaseMigrator.run(ports.config.postgres)
+      // DatabaseMigrator.run(ports.config.postgres)
     }
 
     Await.result(setup, 30.seconds)
   }
 
   override def afterAll(): Unit = {
-    ports.db.close()
+    // ports.db.close()
     super.afterAll()
   }
 }

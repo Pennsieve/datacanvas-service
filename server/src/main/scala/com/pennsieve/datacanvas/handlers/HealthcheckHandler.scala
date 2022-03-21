@@ -5,9 +5,10 @@ package com.pennsieve.datacanvas.handlers
 import akka.actor.ActorSystem
 import com.pennsieve.datacanvas.Ports
 import com.pennsieve.datacanvas.server.healthcheck.{
-  HealthcheckResource,
-  HealthcheckHandler => GuardrailHandler
+  HealthcheckHandler => GuardrailHandler,
+  HealthcheckResource
 }
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class HealthcheckHandler(
