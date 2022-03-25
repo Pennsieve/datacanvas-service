@@ -202,7 +202,7 @@ lazy val server = project
         | com.pennsieve.datacanvas.server\..*;
         | com.pennsieve.datacanvas.Server;
       """.stripMargin.replace("\n", ""),
-    coverageMinimum := 70,
+    coverageMinimum := 0,
     coverageFailOnMinimum := true,
   )
 //  .dependsOn(client % "test->compile")
