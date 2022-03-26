@@ -46,12 +46,12 @@ node("executor") {
     }
 
     if (env.BRANCH_NAME == 'main') {
-        stage("Publish Jars") {
-            withCredentials([pennsieveNexusCreds]) {
-                sh "$sbt common/publish"
-                sh "$sbt client/publish"
-            }
-        }
+//         stage("Publish Jars") {
+//             withCredentials([pennsieveNexusCreds]) {
+//                 sh "$sbt common/publish"
+//                 sh "$sbt client/publish"
+//             }
+//         }
 
         stage("Docker") {
             withCredentials([pennsieveNexusCreds]) {
