@@ -23,7 +23,7 @@ class HealthcheckHandler(
   )(
       ): Future[HealthcheckResource.healthcheckResponse] = {
 
-    Future.successful(HealthcheckResource.healthcheckResponseOK)
+    Future.successful(HealthcheckResource.healthcheckResponse.OK)
 
   }
 }

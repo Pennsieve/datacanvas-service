@@ -2,16 +2,9 @@
 
 package com.pennsieve.datacanvas
 
-case class NoDoiException(doi: String) extends Throwable {
-  override def getMessage: String = s"No doi could be found for doi=$doi"
+case class NoDatacanvasException(id: Long) extends Throwable {
+  override def getMessage: String = s"No Data-canvas could be found with id=$id"
 }
-
-case class NoDatasetDoiException(organizationid: Int, datasetId: Int)
-    extends Throwable {
-  override def getMessage: String =
-    s"No doi could be found for organizationId=$organizationid datasetId=$datasetId"
-}
-
-case object DuplicateDoiException extends Throwable
+case object DuplicateDatacanvasException extends Throwable
 
 case class ForbiddenException(msg: String) extends Throwable {}
