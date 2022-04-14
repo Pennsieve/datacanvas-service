@@ -2,6 +2,10 @@
 
 A service that manages Pennsieve Data Canvases. 
 
+## Dependencies
+
+We use [OpenAPI v3.0.3](https://spec.openapis.org/oas/v3.0.3) because [Guardrail does not support OpenAPI v3.1 yet](https://openapi.tools) (scroll down to *SDK Generators* section). There is also a good [guide](https://swagger.io/docs/specification/about/) that describes the document structure and best practices.
+
 ## Testing
 
 Run the unit tests with
