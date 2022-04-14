@@ -12,6 +12,14 @@ variable "pennsieve_postgres_db" {
   default = "pennsieve_postgres"
 }
 
+variable "postgres_num_connections" {
+  default = "10"
+}
+
+variable "postgres_queue_size" {
+  default = "1000"
+}
+
 variable "ecs_task_iam_role_id" {}
 
 locals {
