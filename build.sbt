@@ -1,7 +1,7 @@
 import com.twilio.guardrail.sbt.GuardrailPlugin.autoImport.ScalaServer
 
 ThisBuild / organization := "com.pennsieve"
-ThisBuild / scalaVersion := "2.12.11"
+ThisBuild / scalaVersion := "2.12.15"
 ThisBuild / scalacOptions ++= Seq(
   "-encoding", "utf-8",
   "-deprecation",
@@ -56,7 +56,6 @@ lazy val coreVersion             = "120-01770a6"
 lazy val authMiddlewareVersion   = "5.0.4"
 lazy val serviceUtilitiesVersion = "7-3a0e351"
 lazy val utilitiesVersion        = "3-cd7539b"
-lazy val doiServiceClientVersion = "9-b716c56"
 lazy val slickVersion            = "3.2.3"
 lazy val slickPgVersion          = "0.16.3"
 lazy val dockerItVersion         = "0.9.7"
@@ -66,19 +65,48 @@ lazy val pureConfigVersion       = "0.10.2"
 lazy val elastic4sVersion        = "6.5.1"
 lazy val catsVersion             = "2.0.0"
 lazy val jacksonVersion          = "2.9.6"
+lazy val enumeratumVersion       = "1.5.13"
 
 lazy val Integration = config("integration") extend(Test)
+
+lazy val common = project
+  .enablePlugins(AutomateHeaderPlugin)
+  .settings(
+    name := "datacanvas-service-common",
+    headerLicense := headerLicenseValue,
+    headerMappings := headerMappings.value + headerMappingsValue,
+    libraryDependencies ++= Seq(
+      "io.circe" %% "circe-core" % circeVersion,
+      "io.circe" %% "circe-generic" % circeVersion,
+      "io.circe" %% "circe-jawn" % circeVersion,
+      "io.circe" %% "circe-java8" % circeVersion,
+      "com.beachape" %% "enumeratum" % enumeratumVersion,
+      "com.beachape" %% "enumeratum-circe" % enumeratumVersion,
+      "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
+      "com.typesafe.akka" %% "akka-stream" % akkaVersion
+    ),
+    publishTo := {
+      val nexus = "https://nexus.pennsieve.cc/repository"
+      if (isSnapshot.value) {
+        Some("Nexus Realm" at s"$nexus/maven-snapshots")
+      } else {
+        Some("Nexus Realm" at s"$nexus/maven-releases")
+      }
+    },
+    publishMavenStyle := true
+  )
 
 lazy val server = project
   .enablePlugins(AutomateHeaderPlugin)
   .enablePlugins(DockerPlugin)
   .configs(Integration)
+  .dependsOn(common)
   .settings(
     name := "datacanvas-service",
     headerLicense := headerLicenseValue,
     headerMappings := headerMappings.value + headerMappingsValue,
     scalafmtOnCompile := true,
-    test in assembly := {},
+    assembly / test := {},
     Test / fork := true,
     Test / testForkedParallel := true,
     // Only run integration tests with the `integration:test` command
@@ -159,10 +187,10 @@ lazy val server = project
       "software.amazon.awssdk" % "s3" % awsSdkVersion % Test,
       "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % Test,
     ),
-    guardrailTasks in Compile := List(
+    Compile / guardrailTasks := List(
       ScalaServer(file("openapi/datacanvas-service.yml"), pkg="com.pennsieve.datacanvas.server")
     ),
-    dockerfile in docker := {
+    docker / dockerfile := {
       val artifact: File = assembly.value
       val artifactTargetPath = s"/app/${artifact.name}"
       new Dockerfile {
@@ -176,10 +204,10 @@ lazy val server = project
         cmd("--service", "datacanvas-service", "exec", "app/run.sh", artifactTargetPath)
       }
     },
-    imageNames in docker := Seq(
+    docker / imageNames := Seq(
       ImageName("pennsieve/datacanvas-service:latest")
     ),
-    assemblyMergeStrategy in assembly := {
+    assembly / assemblyMergeStrategy := {
       case PathList("META-INF", _ @_*) => MergeStrategy.discard
       case PathList(ps @ _*) if ps.last endsWith "AWSCredentials.class"  => MergeStrategy.first
       case PathList(ps @ _*) if ps.last endsWith "AWSCredentialsProvider.class"  => MergeStrategy.first
@@ -193,7 +221,7 @@ lazy val server = project
       case PathList("codegen-resources", "waiters-2.json", _ @_*) => MergeStrategy.discard
 
       case x =>
-        val oldStrategy = (assemblyMergeStrategy in assembly).value
+        val oldStrategy = (assembly / assemblyMergeStrategy).value
         oldStrategy(x)
     },
     coverageExcludedPackages :=

@@ -3,13 +3,20 @@ info:
   version: 0.0.1
   title: DataCanvas Service
 tags:
-  - name: Health
+  - name: DataCanvas
+schemes:
+  - https
 servers:
   - url: https://api.pennsieve.io/datacanvas
   - url: https://api.pennsieve.net/datacanvas
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
 
 paths:
-  "/health":
+  /health:
     get:
       security: [ ]
       summary: healthcheck
@@ -26,6 +33,48 @@ paths:
               schema:
                 type: string
 
+  /{id}:
+    get:
+      security:
+        - Bearer: [ ]
+      summary: Get a data-canvas by id
+      description: Get a data-canvas from the Pennsieve database by looking up the id number.
+      operationId: getById
+      produces:
+        - application/json
+      x-scala-package: datacanvas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: the data-canvas unique identifier
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                x-scala-type: com.pennsieve.datacanvas.models.DatacanvasDTO
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+          schema:
+            type: string
+        404:
+          description: resource not found
+          schema:
+            type: string
+        500:
+          description: Internal error
+          schema:
+            type: string
+
 components:
   securitySchemes:
     Bearer:
@@ -34,3 +83,23 @@ components:
       bearerFormat: JWT
 
   schemas:
+    DataCanvas:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        nodeId:
+          type: string
+        permissionBit:
+          type: integer
+        role:
+          type: string
+        statusId:
+          type: integer
+      required:
+        - name
+        - description
