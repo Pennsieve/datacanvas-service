@@ -44,7 +44,7 @@ resource "aws_ssm_parameter" "postgres_queue_size" {
 resource "aws_ssm_parameter" "pennsieve_postgres_user" {
   name  = "/${var.environment_name}/${var.service_name}/pennsieve-postgres-user"
   type  = "String"
-  value = "${var.environment_name}_${var.service_name}_user"
+  value = "${var.environment_name}_${replace(var.service_name, "-", "_")}_user"
 }
 
 resource "aws_ssm_parameter" "pennsieve_postgres_password" {
