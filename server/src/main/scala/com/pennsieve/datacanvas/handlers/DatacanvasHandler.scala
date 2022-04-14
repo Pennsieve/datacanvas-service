@@ -2,7 +2,11 @@
 
 package com.pennsieve.datacanvas.handlers
 
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.http.scaladsl.server.Route
 import com.pennsieve.auth.middleware.Jwt
+import com.pennsieve.auth.middleware.AkkaDirective.authenticateJwt
 import com.pennsieve.datacanvas.Authenticator.withAuthorization
 import com.pennsieve.datacanvas.{
   ForbiddenException,
@@ -11,6 +15,7 @@ import com.pennsieve.datacanvas.{
 }
 import com.pennsieve.datacanvas.db.DatacanvasMapper
 import com.pennsieve.datacanvas.logging.CanvasLogContext
+import com.pennsieve.datacanvas.logging.logRequestAndResponse
 import com.pennsieve.datacanvas.models.DatacanvasDTO
 import com.pennsieve.datacanvas.server.datacanvas.{
   DatacanvasHandler => GuardrailHandler,
@@ -56,5 +61,25 @@ class DatacanvasHandler(
         case NoDatacanvasException(_) =>
           GuardrailResource.getByIdResponse.NotFound
       }
+  }
+}
+
+object DatacanvasHandler {
+
+  def routes(
+      ports: Ports
+  )(
+      implicit
+      system: ActorSystem,
+      materializer: ActorMaterializer,
+      executionContext: ExecutionContext
+  ): Route = {
+    logRequestAndResponse(ports) {
+      authenticateJwt(system.name)(ports.jwt) { claim =>
+        GuardrailResource.routes(
+          new DatacanvasHandler(claim)(ports, executionContext)
+        )
+      }
+    }
   }
 }
