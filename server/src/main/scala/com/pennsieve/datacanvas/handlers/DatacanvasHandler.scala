@@ -11,6 +11,7 @@ import com.pennsieve.datacanvas.Authenticator.withAuthorization
 import com.pennsieve.datacanvas.{
   ForbiddenException,
   NoDatacanvasException,
+  NoDatacanvasNameException,
   Ports
 }
 import com.pennsieve.datacanvas.db.DatacanvasMapper
@@ -60,6 +61,35 @@ class DatacanvasHandler(
       .recover {
         case NoDatacanvasException(_) =>
           GuardrailResource.getByIdResponse.NotFound
+      }
+  }
+
+  override def getByName(respond: GuardrailResource.getByNameResponse.type)(
+      name: String
+  ): Future[GuardrailResource.getByNameResponse] = {
+    implicit val logContext = CanvasLogContext(datacanvasName = Some(name))
+
+    ports.db
+      .run(DatacanvasMapper.getByName(name))
+      .flatMap { internalDatacanvas =>
+        withAuthorization[GuardrailResource.getByNameResponse](
+          claim
+        ) {
+          Future(
+            GuardrailResource.getByNameResponse.OK(
+              DatacanvasDTO.apply(internalDatacanvas).asJson
+            )
+          )
+        }.recover {
+          case ForbiddenException(e) =>
+            GuardrailResource.getByNameResponse.Forbidden
+          case NonFatal(e) =>
+            GuardrailResource.getByNameResponse.InternalServerError
+        }
+      }
+      .recover {
+        case NoDatacanvasNameException(_) =>
+          GuardrailResource.getByNameResponse.NotFound
       }
   }
 }

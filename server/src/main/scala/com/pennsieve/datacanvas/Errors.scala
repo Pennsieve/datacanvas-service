@@ -5,6 +5,11 @@ package com.pennsieve.datacanvas
 case class NoDatacanvasException(id: Long) extends Throwable {
   override def getMessage: String = s"No Data-canvas could be found with id=$id"
 }
+
+case class NoDatacanvasNameException(name: String) extends Throwable {
+  override def getMessage: String =
+    s"No Data-canvas could be found with name=$name"
+}
 case object DuplicateDatacanvasException extends Throwable
 
 case class ForbiddenException(msg: String) extends Throwable {}
