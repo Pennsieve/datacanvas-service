@@ -12,8 +12,6 @@ import com.pennsieve.datacanvas.server.healthcheck.{
 import scala.concurrent.{ExecutionContext, Future}
 
 class HealthcheckHandler(
-    ports: Ports
-)(
     implicit
     executionContext: ExecutionContext
 ) extends GuardrailHandler {
@@ -30,10 +28,8 @@ class HealthcheckHandler(
 
 object HealthcheckHandler {
   def routes(
-      ports: Ports
-  )(
       implicit
       system: ActorSystem,
       executionContext: ExecutionContext
-  ) = HealthcheckResource.routes(new HealthcheckHandler(ports))
+  ) = HealthcheckResource.routes(new HealthcheckHandler)
 }
