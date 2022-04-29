@@ -1,15 +1,17 @@
-openapi: 3.0.0
+swagger: '2.0'
 info:
-  version: 0.0.1
-  title: DataCanvas Service
-tags:
-  - name: DataCanvas
+  version: 0.0.0
+  title: 'DataCanvas Service'
+host: 0.0.0.0:8080
 schemes:
   - https
-servers:
-  - url: https://api.pennsieve.io/datacanvas
-  - url: https://api.pennsieve.net/datacanvas
-
+tags:
+  - name: DataCanvas
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
 paths:
   /health:
     get:
@@ -19,5 +21,5 @@ paths:
       x-scala-package: healthcheck
       description: Ensure the service is responding to requests.
       responses:
-        '200':
+        200:
           description: Success
