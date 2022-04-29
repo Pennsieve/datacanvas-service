@@ -7,8 +7,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 import akka.stream.{ActorMaterializer, Materializer}
-//import com.pennsieve.datacanvas.handlers.{DatacanvasHandler, HealthcheckHandler}
-import com.pennsieve.datacanvas.handlers.HealthcheckHandler
+import com.pennsieve.datacanvas.handlers.{DatacanvasHandler, HealthcheckHandler}
 import com.typesafe.scalalogging.StrictLogging
 import pureconfig.generic.auto._
 
@@ -33,10 +32,12 @@ object Server extends App with StrictLogging {
       executionContext: ExecutionContext
   ): Route =
     concat(
-      HealthcheckHandler.routes(ports)
+      HealthcheckHandler.routes
     )
 
-  val routes: Route = Route.seal(HealthcheckHandler.routes(ports))
+  val routes: Route = Route.seal(
+    HealthcheckHandler.routes ~ DatacanvasHandler.routes(ports)
+  )
 
   Http().bindAndHandle(routes, config.host, config.port)
   logger.info(s"Server online at http://${config.host}:${config.port}")
