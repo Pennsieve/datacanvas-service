@@ -8,7 +8,8 @@ final case class CanvasLogContext(
     organizationId: Option[Int] = None,
     datasetId: Option[Int] = None,
     userId: Option[Int] = None,
-    datacanvasId: Option[Long] = None
+    datacanvasId: Option[Long] = None,
+    datacanvasName: Option[String] = None
 ) extends LogContext {
   override val values: Map[String, String] = inferValues(this)
 }

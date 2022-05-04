@@ -2,7 +2,10 @@
 
 package com.pennsieve.datacanvas.db
 
-import com.pennsieve.datacanvas.NoDatacanvasException
+import com.pennsieve.datacanvas.{
+  NoDatacanvasException,
+  NoDatacanvasNameException
+}
 import com.pennsieve.datacanvas.db.profile.api._
 import com.pennsieve.datacanvas.models._
 
@@ -51,4 +54,20 @@ object DatacanvasMapper extends TableQuery(new DatacanvasTable(_)) {
         case None             => DBIO.failed(NoDatacanvasException(id))
         case Some(datacanvas) => DBIO.successful(datacanvas)
       }
+
+  def getByName(
+      name: String
+  )(
+      implicit
+      executionContext: ExecutionContext
+  ): DBIOAction[Datacanvas, NoStream, Effect.Read with Effect] =
+    this
+      .filter(_.name === name)
+      .result
+      .headOption
+      .flatMap {
+        case None             => DBIO.failed(NoDatacanvasNameException(name))
+        case Some(datacanvas) => DBIO.successful(datacanvas)
+      }
+
 }
