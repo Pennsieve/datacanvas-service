@@ -20,6 +20,8 @@ class Ports(
     system: ActorSystem,
     executionContext: ExecutionContext
 ) {
+  val logger = new ContextLogger()
+  val log = logger.context
 
   val jwt: Jwt.Config = new Jwt.Config {
     val key: String = config.jwt.key
@@ -27,6 +29,12 @@ class Ports(
 
   val db: Database = {
     val hikariDataSource = new HikariDataSource()
+
+    implicit val logContext =
+      com.pennsieve.datacanvas.logging.CanvasLogContext()
+    log.info(
+      s"ports.db => jdbcUrl: ${config.postgres.jdbcURL} user: ${config.postgres.user} password: ${config.postgres.password}"
+    )
 
     hikariDataSource.setJdbcUrl(config.postgres.jdbcURL)
     hikariDataSource.setUsername(config.postgres.user)
@@ -49,6 +57,4 @@ class Ports(
     )
   }
 
-  val logger = new ContextLogger()
-  val log = logger.context
 }

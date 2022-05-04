@@ -21,6 +21,8 @@ import com.pennsieve.datacanvas.server.datacanvas.{
   DatacanvasHandler => GuardrailHandler,
   DatacanvasResource => GuardrailResource
 }
+import com.pennsieve.service.utilities.LogContext
+import com.typesafe.scalalogging.LoggerTakingImplicit
 import io.circe.syntax._
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,9 +41,12 @@ class DatacanvasHandler(
       datacanvasId: Int
   ): Future[GuardrailResource.getByIdResponse] = {
     implicit val logContext = CanvasLogContext(
+      organizationId = Some(organizationId),
       datacanvasId = Some(datacanvasId)
     )
-
+    ports.log.info(
+      s"getById() organizationId: ${organizationId} datacanvasId: ${datacanvasId}"
+    )
     ports.db
       .run(DatacanvasMapper.getById(datacanvasId))
       .flatMap { internalDatacanvas =>
