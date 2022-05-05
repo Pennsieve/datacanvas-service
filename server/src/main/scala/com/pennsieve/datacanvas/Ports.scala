@@ -46,7 +46,7 @@ class Ports(
 
     // Currently minThreads, maxThreads and maxConnections MUST be the same value
     // https://github.com/slick/slick/issues/1938
-    Database.forDataSource(
+    val _db = Database.forDataSource(
       hikariDataSource,
       maxConnections = None, // Ignored if an executor is provided
       executor = AsyncExecutor(
@@ -57,6 +57,11 @@ class Ports(
         queueSize = config.postgres.queueSize
       )
     )
+
+    log.info(
+      s"ports.db => hikariDataSource: ${hikariDataSource} isRunning: ${hikariDataSource.isRunning} isClosed: ${hikariDataSource.isClosed}"
+    )
+    _db
   }
 
   log.info(s"ports => db: ${db}")
