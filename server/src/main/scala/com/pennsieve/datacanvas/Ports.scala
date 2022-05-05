@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
+// Copyright (c) 2022 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.datacanvas
 
@@ -22,6 +22,8 @@ class Ports(
 ) {
   val logger = new ContextLogger()
   val log = logger.context
+  implicit val logContext =
+    com.pennsieve.datacanvas.logging.CanvasLogContext()
 
   val jwt: Jwt.Config = new Jwt.Config {
     val key: String = config.jwt.key
@@ -30,8 +32,6 @@ class Ports(
   val db: Database = {
     val hikariDataSource = new HikariDataSource()
 
-    implicit val logContext =
-      com.pennsieve.datacanvas.logging.CanvasLogContext()
     log.info(
       s"ports.db => jdbcUrl: ${config.postgres.jdbcURL} user: ${config.postgres.user} password: ${config.postgres.password}"
     )
@@ -41,6 +41,8 @@ class Ports(
     hikariDataSource.setPassword(config.postgres.password)
     hikariDataSource.setMaximumPoolSize(config.postgres.numConnections)
     hikariDataSource.setDriverClassName(config.postgres.driver)
+
+    log.info(s"ports.db => hikariDataSource: ${hikariDataSource}")
 
     // Currently minThreads, maxThreads and maxConnections MUST be the same value
     // https://github.com/slick/slick/issues/1938
@@ -56,5 +58,7 @@ class Ports(
       )
     )
   }
+
+  log.info(s"ports => db: ${db}")
 
 }

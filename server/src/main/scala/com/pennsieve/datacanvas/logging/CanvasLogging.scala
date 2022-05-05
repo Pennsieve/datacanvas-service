@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
+// Copyright (c) 2022 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.datacanvas.logging
 
