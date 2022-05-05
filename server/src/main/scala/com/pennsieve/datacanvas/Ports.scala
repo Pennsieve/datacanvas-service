@@ -42,6 +42,25 @@ class Ports(
     hikariDataSource.setMaximumPoolSize(config.postgres.numConnections)
     hikariDataSource.setDriverClassName(config.postgres.driver)
 
+    try {
+      val connection = hikariDataSource.getConnection
+      log.info(s"ports.db => connection: ${connection}")
+    } catch {
+      case e: Throwable =>
+        log.info(
+          s"ports.db => hikariDataSource.getConnection() exception: ${e}"
+        )
+        log.info(
+          s"ports.db => hikariDataSource.getConnection() getMessage: ${e.getMessage}"
+        )
+        log.info(
+          s"ports.db => hikariDataSource.getConnection() getCause: ${e.getCause}"
+        )
+        log.info(
+          s"ports.db => hikariDataSource.getConnection() getStackTrace: ${e.getStackTrace}"
+        )
+    }
+
     log.info(s"ports.db => hikariDataSource: ${hikariDataSource}")
 
     // Currently minThreads, maxThreads and maxConnections MUST be the same value
