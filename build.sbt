@@ -36,7 +36,7 @@ ThisBuild / credentials += Credentials(
 ThisBuild / version := sys.props.get("version").getOrElse("SNAPSHOT")
 
 lazy val headerLicenseValue = Some(HeaderLicense.Custom(
-  "Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved."
+  "Copyright (c) 2022 Pennsieve, Inc. All Rights Reserved."
 ))
 lazy val headerMappingsValue = HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment
 
