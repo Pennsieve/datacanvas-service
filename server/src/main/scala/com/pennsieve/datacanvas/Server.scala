@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
+// Copyright (c) 2022 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.datacanvas
 
@@ -22,6 +22,7 @@ object Server extends App with StrictLogging {
   implicit val executionContext: ExecutionContext = system.dispatcher
 
   implicit val ports: Ports = new Ports(config)
+  logger.info(s"ports.db = ${ports.db}")
 
   def createRoutes(
       ports: Ports

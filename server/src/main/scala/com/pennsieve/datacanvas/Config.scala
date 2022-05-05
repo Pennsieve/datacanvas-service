@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
+// Copyright (c) 2022 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.datacanvas
 
@@ -28,14 +28,5 @@ case class PostgresConfiguration(
     else jdbcBaseURL
   }
 }
-
-case class DataCiteClientConfiguration(
-    username: String,
-    password: String,
-    apiUrl: String,
-    pennsievePrefix: String
-)
-
-case class CitationClientConfiguration(apiUrl: String)
 
 case class JwtConfig(key: String, duration: FiniteDuration = 5.minutes)
