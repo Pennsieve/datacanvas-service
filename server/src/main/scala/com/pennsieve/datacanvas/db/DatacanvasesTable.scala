@@ -8,19 +8,20 @@ import com.pennsieve.datacanvas.models._
 
 import java.time.{OffsetDateTime, ZoneOffset}
 import scala.concurrent.ExecutionContext
+import slick.dbio.{DBIOAction, Effect}
 
 final class DatacanvasTable(tag: Tag)
     extends Table[Datacanvas](tag, Some(schema), "datacanvases") {
 
-  def id: Rep[Long] = column[Long]("id")
+  def id: Rep[Int] = column[Int]("id")
   def name: Rep[String] = column[String]("name")
   def description: Rep[String] = column[String]("description")
   def createdAt: Rep[OffsetDateTime] = column[OffsetDateTime]("created_at")
   def updatedAt: Rep[OffsetDateTime] = column[OffsetDateTime]("updated_at")
   def nodeId: Rep[String] = column[String]("node_id")
-  def permissionBit: Rep[Long] = column[Long]("permission_bit")
+  def permissionBit: Rep[Int] = column[Int]("permission_bit")
   def role: Rep[String] = column[String]("role")
-  def statusId: Rep[Long] = column[Long]("status_id")
+  def statusId: Rep[Int] = column[Int]("status_id")
 
   def * =
     (
@@ -37,14 +38,19 @@ final class DatacanvasTable(tag: Tag)
 }
 
 object DatacanvasMapper extends TableQuery(new DatacanvasTable(_)) {
+
+  def get(id: Int): Query[DatacanvasTable, Datacanvas, Seq] = {
+    this.filter(_.id === id)
+  }
+
   def getById(
-      id: Long
+      id: Int
   )(
       implicit
       executionContext: ExecutionContext
   ): DBIOAction[Datacanvas, NoStream, Effect.Read with Effect] =
     this
-      .filter(_.id === id)
+      .get(id)
       .result
       .headOption
       .flatMap {

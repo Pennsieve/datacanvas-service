@@ -1,10 +1,10 @@
-// Copyright (c) 2019 Pennsieve, Inc. All Rights Reserved.
+// Copyright (c) 2022 Pennsieve, Inc. All Rights Reserved.
 
 package com.pennsieve.datacanvas
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import com.pennsieve.doi.DockerPostgresService
+import com.pennsieve.datacanvas.DockerPostgresService
 import com.pennsieve.test.AwaitableImplicits
 import com.spotify.docker.client.DefaultDockerClient
 import com.spotify.docker.client.exceptions.DockerException

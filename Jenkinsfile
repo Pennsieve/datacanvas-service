@@ -23,18 +23,19 @@ node("executor") {
         stage("Test") {
             withCredentials([pennsieveNexusCreds]) {
                 try {
-                    sh "$sbt coverageOn test"
+                    //sh "$sbt coverageOn test"
+                    sh "$sbt test"
                 } finally {
                     junit '**/target/test-reports/*.xml'
                 }
             }
         }
 
-        stage("Test Coverage") {
-            withCredentials([pennsieveNexusCreds]) {
-                sh "$sbt coverageReport"
-            }
-        }
+        //stage("Test Coverage") {
+        //   withCredentials([pennsieveNexusCreds]) {
+        //        sh "$sbt coverageReport"
+        //    }
+        //}
 
         if (env.BRANCH_NAME == 'main') {
             stage("Docker") {
