@@ -3,15 +3,19 @@
 package com.pennsieve.datacanvas.handlers
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.http.scaladsl.model.headers.{Authorization, OAuth2BearerToken}
+import akka.http.scaladsl.server.directives.HeaderDirectives._
 import akka.http.scaladsl.server.Route
+import akka.stream.ActorMaterializer
+import cats.implicits._
 import com.pennsieve.auth.middleware.Jwt
 import com.pennsieve.auth.middleware.AkkaDirective.authenticateJwt
 import com.pennsieve.datacanvas.Authenticator.withAuthorization
 import com.pennsieve.datacanvas.{
   ForbiddenException,
   NoDatacanvasException,
-  Ports
+  Ports,
+  UnauthorizedException
 }
 import com.pennsieve.datacanvas.db.DatacanvasMapper
 import com.pennsieve.datacanvas.logging.CanvasLogContext
@@ -24,17 +28,27 @@ import com.pennsieve.datacanvas.server.datacanvas.{
 import com.pennsieve.service.utilities.LogContext
 import com.typesafe.scalalogging.LoggerTakingImplicit
 import io.circe.syntax._
+import slick.dbio.DBIO
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
 class DatacanvasHandler(
-    claim: Jwt.Claim
-)(
-    implicit
     ports: Ports,
-    executionContext: ExecutionContext
+    authorization: Option[Authorization],
+    claim: Option[Jwt.Claim]
+)(
+    implicit executionContext: ExecutionContext
 ) extends GuardrailHandler {
+
+  def authorized(): DBIO[Unit] = {
+    DBIO.from {
+      authorization match {
+        case Some(_) => Future.successful(())
+        case None    => Future.failed(UnauthorizedException)
+      }
+    }
+  }
 
   override def getById(respond: GuardrailResource.getByIdResponse.type)(
       organizationId: Int,
@@ -47,25 +61,21 @@ class DatacanvasHandler(
     ports.log.info(
       s"getById() organizationId: ${organizationId} datacanvasId: ${datacanvasId}"
     )
+
+    val query = for {
+      _ <- authorized()
+
+      canvas <- DatacanvasMapper.getById(datacanvasId)
+    } yield canvas
+
     ports.db
-      .run(DatacanvasMapper.getById(datacanvasId))
+      .run(query)
       .flatMap { internalDatacanvas =>
-        withAuthorization[GuardrailResource.getByIdResponse](
-          claim
-        ) {
-          Future(
-            GuardrailResource.getByIdResponse.OK(
-              DatacanvasDTO.apply(internalDatacanvas).asJson
-            )
+        Future(
+          GuardrailResource.getByIdResponse.OK(
+            DatacanvasDTO.apply(internalDatacanvas).asJson
           )
-        }.recover {
-          case ForbiddenException(e) =>
-            GuardrailResource.getByIdResponse.Forbidden(
-              "operation is forbidden"
-            )
-          case NonFatal(e) =>
-            GuardrailResource.getByIdResponse.InternalServerError(e.toString)
-        }
+        )
       }
       .recover {
         case NoDatacanvasException(_) =>
@@ -85,10 +95,22 @@ object DatacanvasHandler {
       executionContext: ExecutionContext
   ): Route = {
     logRequestAndResponse(ports) {
-      authenticateJwt(system.name)(ports.jwt) { claim =>
-        GuardrailResource.routes(
-          new DatacanvasHandler(claim)(ports, executionContext)
-        )
+      optionalHeaderValue {
+        case header @ Authorization(OAuth2BearerToken(_)) => Some(header)
+        case _                                            => None
+      } {
+        case authorization @ Some(_) =>
+          authenticateJwt(system.name)(ports.jwt) { claim =>
+            GuardrailResource.routes(
+              new DatacanvasHandler(ports, authorization, claim.some)(
+                executionContext
+              )
+            )
+          }
+        case _ =>
+          GuardrailResource.routes(
+            new DatacanvasHandler(ports, None, None)(executionContext)
+          )
       }
     }
   }

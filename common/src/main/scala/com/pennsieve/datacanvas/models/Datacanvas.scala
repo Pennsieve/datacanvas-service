@@ -7,15 +7,15 @@ import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 import io.circe.{Decoder, Encoder}
 
 case class Datacanvas(
-  id: Long,
+  id: Int,
   name: String,
   description: String,
   createdAt: OffsetDateTime = OffsetDateTime.now(ZoneOffset.UTC),
   updatedAt: OffsetDateTime = OffsetDateTime.now(ZoneOffset.UTC),
   nodeId: String,
-  permissionBit: Long,
+  permissionBit: Int,
   role: String,
-  statusId: Long
+  statusId: Int
 )
 
 object Datacanvas {

@@ -2,6 +2,8 @@
 
 package com.pennsieve.datacanvas
 
+case object UnauthorizedException extends Throwable {}
+
 case class NoDatacanvasException(id: Long) extends Throwable {
   override def getMessage: String = s"No Data-canvas could be found with id=$id"
 }

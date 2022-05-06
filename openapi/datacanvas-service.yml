@@ -28,6 +28,23 @@ paths:
               schema:
                 type: string
 
+  "/":
+    get:
+      security: []
+      summary: get nothing
+      operationId: getNothing
+      x-scala-package: nothing
+      description: An endpoint responding to a GET that returns nothing.
+      responses:
+        "200":
+          description: Success
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NothingResponse"
+
   "/{organizationId}/canvas/{canvasId}":
     get:
       summary: get a data-canvas by its identifier
@@ -85,3 +102,16 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  schemas:
+    NothingResponse:
+      type: object
+      required:
+        - id
+        - message
+      properties:
+        id:
+          type: integer
+          format: int32
+        message:
+          type: string

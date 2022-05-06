@@ -53,7 +53,7 @@ lazy val akkaVersion             = "2.6.5"
 lazy val alpakkaVersion          = "1.1.0"
 lazy val circeVersion            = "0.11.0"
 lazy val coreVersion             = "120-01770a6"
-lazy val authMiddlewareVersion   = "5.0.4"
+lazy val authMiddlewareVersion   = "5.1.3"
 lazy val serviceUtilitiesVersion = "7-3a0e351"
 lazy val utilitiesVersion        = "3-cd7539b"
 lazy val slickVersion            = "3.2.3"
@@ -230,7 +230,7 @@ lazy val server = project
         | com.pennsieve.datacanvas.server\..*;
         | com.pennsieve.datacanvas.Server;
       """.stripMargin.replace("\n", ""),
-    coverageMinimum := 0,
+    coverageMinimumStmtTotal := 0,
     coverageFailOnMinimum := true,
   )
 //  .dependsOn(client % "test->compile")
